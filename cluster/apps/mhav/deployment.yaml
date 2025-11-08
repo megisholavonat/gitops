@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav
+spec:
+  selector:
+    matchLabels:
+      app: mhav
+  template:
+    metadata:
+      labels:
+        app: mhav
+    spec:
+      containers:
+        - name: mhav
+          image: yeasy/simple-web:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi

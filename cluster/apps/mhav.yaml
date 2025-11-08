@@ -1,25 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: redis
+  name: mhav
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-    - repoURL: registry-1.docker.io/cloudpirates
-      chart: redis
-      targetRevision: 0.13.x
-      helm:
-        valueFiles:
-          - $values/cluster/apps/redis/values.yaml
     - repoURL: https://github.com/megisholavonat/gitops.git
       targetRevision: HEAD
-      ref: values
+      path: cluster/apps/mhav
   destination:
     name: in-cluster
-    namespace: redis
+    namespace: mhav
   syncPolicy:
     automated:
       prune: true
