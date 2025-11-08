@@ -14,7 +14,7 @@ spec:
       helm:
         valueFiles:
           - $values/cluster/data/redis/values.yaml
-    - repoURL: git@github.com/megisholavonat/gitops.git
+    - repoURL: https://github.com/megisholavonat/gitops.git
       targetRevision: HEAD
       ref: values
   destination:
