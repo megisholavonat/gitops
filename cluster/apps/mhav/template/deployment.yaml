@@ -11,6 +11,8 @@ spec:
       labels:
         app: mhav
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: mhav
           image: ghcr.io/megisholavonat/megisholavonat:{{ .Values.image.tag }}
