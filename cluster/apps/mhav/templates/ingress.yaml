@@ -4,10 +4,11 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
   name: mhav
+  namespace: { { .Values.namespace } }
 spec:
   ingressClassName: traefik
   rules:
-    - host: mhav.localhost
+    - host: { { .Values.ingress.host } }
       http:
         paths:
           - backend:

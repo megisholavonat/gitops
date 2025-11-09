@@ -1,0 +1,20 @@
+environment: prod
+namespace: mhav
+
+image:
+  tag: f3b0fca4c73ac2d1877e13412a8dc11af179e156
+
+ingress:
+  host: mhav.localhost
+
+redis:
+  namespace: redis
+  service: redis
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
