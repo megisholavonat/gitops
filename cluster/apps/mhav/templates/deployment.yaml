@@ -18,6 +18,33 @@ spec:
           image: ghcr.io/jamdon2/megisholavonat:{{ .Values.image.tag }}
           ports:
             - containerPort: 80
+          env:
+            - name: REDIS_URL
+              value: redis://redis.redis.svc.cluster.local:6379
+            - name: GRAPHQL_ENDPOINT
+              value: "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql"
+            - name: SOCKS5_PROXY_ENABLE
+              value: "true"
+            - name: SOCKS5_PROXY_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-app-secret
+                  key: SOCKS5_PROXY_HOST
+            - name: SOCKS5_PROXY_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-app-secret
+                  key: SOCKS5_PROXY_PORT
+            - name: SOCKS5_PROXY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-app-secret
+                  key: SOCKS5_PROXY_USERNAME
+            - name: SOCKS5_PROXY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-app-secret
+                  key: SOCKS5_PROXY_PASSWORD
           resources:
             requests:
               cpu: 100m
