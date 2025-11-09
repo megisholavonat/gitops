@@ -17,7 +17,7 @@ spec:
         - name: mhav
           image: ghcr.io/jamdon2/megisholavonat:{{ .Values.image.tag }}
           ports:
-            - containerPort: 80
+            - containerPort: 3000
           env:
             - name: REDIS_URL
               value: redis://redis.redis.svc.cluster.local:6379
