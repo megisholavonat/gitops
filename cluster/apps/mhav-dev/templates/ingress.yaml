@@ -3,8 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/auth-type: basic
-    traefik.ingress.kubernetes.io/auth-secret: mhav-dev-basic-auth-secret
+    traefik.ingress.kubernetes.io/router.middlewares: mhav-dev-basic-auth@kubernetescrd
   name: mhav-dev
 spec:
   ingressClassName: traefik
