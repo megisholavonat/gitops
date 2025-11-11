@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mhav
-  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
@@ -11,7 +10,6 @@ spec:
     metadata:
       labels:
         app: mhav
-        environment: {{ .Values.environment }}
     spec:
       imagePullSecrets:
         - name: ghcr-secret
@@ -22,7 +20,7 @@ spec:
             - containerPort: 3000
           env:
             - name: REDIS_URL
-              value: redis://{{ .Values.redis.service }}.{{ .Values.redis.namespace }}.svc.cluster.local:6379
+              value: redis://redis.redis.svc.cluster.local:6379
             - name: GRAPHQL_ENDPOINT
               value: "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql"
             - name: SOCKS5_PROXY_ENABLE
@@ -49,8 +47,8 @@ spec:
                   key: SOCKS5_PROXY_PASSWORD
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+              cpu: 100m
+              memory: 128Mi
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+              cpu: 1000m
+              memory: 1024Mi
