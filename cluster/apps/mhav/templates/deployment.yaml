@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mhav
-  namespace: { { .Values.namespace } }
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
         app: mhav
-        environment: { { .Values.environment } }
+        environment: {{ .Values.environment }}
     spec:
       imagePullSecrets:
         - name: ghcr-secret
@@ -49,8 +49,8 @@ spec:
                   key: SOCKS5_PROXY_PASSWORD
           resources:
             requests:
-              cpu: { { .Values.resources.requests.cpu } }
-              memory: { { .Values.resources.requests.memory } }
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
             limits:
-              cpu: { { .Values.resources.limits.cpu } }
-              memory: { { .Values.resources.limits.memory } }
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
