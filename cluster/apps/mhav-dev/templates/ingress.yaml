@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: mhav-dev.localhost
+    - host: dev.megisholavonat.info
       http:
         paths:
           - backend:

@@ -16,7 +16,7 @@ spec:
   version: 9.x.x
   valuesContent: |-
     global:
-      domain: argocd.localhost
+      domain: argocd.megisholavonat.info
 
     server:
       ingress:
