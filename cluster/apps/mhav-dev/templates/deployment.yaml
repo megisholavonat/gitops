@@ -25,6 +25,8 @@ spec:
               value: "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql"
             - name: SOCKS5_PROXY_ENABLE
               value: "true"
+            - name: NEXT_PUBLIC_POSTHOG_KEY
+              value: phc_EcJKrQSOQnG0Donv3iO1XgWS7wPLEtKI5sy1Yl1OfoJ
             - name: SOCKS5_PROXY_HOST
               valueFrom:
                 secretKeyRef:
