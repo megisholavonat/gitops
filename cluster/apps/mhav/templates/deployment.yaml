@@ -53,12 +53,12 @@ spec:
           #     port: 3000
           #     scheme: HTTP
           #   initialDelaySeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 3000
-              scheme: HTTP
-            initialDelaySeconds: 10
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 3000
+          #     scheme: HTTP
+          #   initialDelaySeconds: 10
           resources:
             requests:
               cpu: 100m
