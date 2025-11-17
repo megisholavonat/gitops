@@ -20,7 +20,7 @@ spec:
             - containerPort: 3000
           env:
             - name: REDIS_URL
-              value: redis://redis-dev.redis-dev.svc.cluster.local:6379
+              value: redis://redis.redis.svc.cluster.local:6379
             - name: REDIS_KEY
               value: mhav-dev
             - name: GRAPHQL_ENDPOINT
