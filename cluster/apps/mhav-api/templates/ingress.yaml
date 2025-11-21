@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+  name: mhav-api
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: api.megisholavonat.info
+      http:
+        paths:
+          - backend:
+              service:
+                name: mhav-api
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix

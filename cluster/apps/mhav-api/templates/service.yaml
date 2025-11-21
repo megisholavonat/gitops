@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mhav-api
+spec:
+  selector:
+    app: mhav-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000

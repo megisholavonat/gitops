@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav-api
+spec:
+  selector:
+    matchLabels:
+      app: mhav-api
+  template:
+    metadata:
+      labels:
+        app: mhav-api
+    spec:
+      containers:
+        - name: mhav-api
+          image: ghcr.io/megisholavonat/megisholavonat-api:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 8000
+          env:
+            - name: REDIS_URL
+              value: redis://redis.redis.svc.cluster.local:6379
+            - name: REDIS_KEY
+              value: mhav-api
+            - name: GRAPHQL_ENDPOINT
+              value: "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql"
+            - name: SOCKS5_PROXY_ENABLE
+              value: "true"
+            - name: SOCKS5_PROXY_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-api-app-secret
+                  key: SOCKS5_PROXY_HOST
+            - name: SOCKS5_PROXY_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-api-app-secret
+                  key: SOCKS5_PROXY_PORT
+            - name: SOCKS5_PROXY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-api-app-secret
+                  key: SOCKS5_PROXY_USERNAME
+            - name: SOCKS5_PROXY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-api-app-secret
+                  key: SOCKS5_PROXY_PASSWORD
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
