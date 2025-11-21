@@ -17,8 +17,8 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: REDIS_URL
-              value: redis://redis.redis.svc.cluster.local:6379
+            - name: REDIS_HOST
+              value: redis.redis.svc.cluster.local
             - name: REDIS_KEY
               value: mhav-api
             - name: GRAPHQL_ENDPOINT
