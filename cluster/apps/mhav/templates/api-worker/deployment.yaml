@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav-api-worker
+spec:
+  selector:
+    matchLabels:
+      app: mhav-api-worker
+  template:
+    metadata:
+      labels:
+        app: mhav-api-worker
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: mhav-api-worker
+          image: ghcr.io/megisholavonat/mhav-api:{{ .Values.image.tag }}
+          command: [ "taskiq" ]
+          args: [ "worker", "api.core.taskiq_broker:broker", "--fs-discover", "--tasks-pattern", "api/tasks/**/*.py" ]
+          env:
+            - name: REDIS_HOST
+              value: redis.redis.svc.cluster.local
+            - name: REDIS_KEY
+              value: mhav-api
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
