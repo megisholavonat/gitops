@@ -16,9 +16,6 @@ spec:
           image: ghcr.io/megisholavonat/mhav-web:{{ .Values.image.tag }}
           ports:
             - containerPort: 3000
-          env:
-            - name: POSTHOG_KEY
-              value: phc_EcJKrQSOQnG0Donv3iO1XgWS7wPLEtKI5sy1Yl1OfoJ
           # livenessProbe:
           #   httpGet:
           #     path: /
