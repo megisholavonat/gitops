@@ -11,8 +11,6 @@ spec:
       labels:
         app: mhav-api-worker
     spec:
-      imagePullSecrets:
-        - name: ghcr-secret
       containers:
         - name: mhav-api-worker
           image: ghcr.io/megisholavonat/mhav-api:{{ .Values.image.tag }}
@@ -23,6 +21,30 @@ spec:
               value: redis.redis.svc.cluster.local
             - name: REDIS_KEY
               value: mhav-api
+            - name: GRAPHQL_ENDPOINT
+              value: "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql"
+            - name: SOCKS5_PROXY_ENABLE
+              value: "true"
+            - name: SOCKS5_PROXY_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-api-app-secret
+                  key: SOCKS5_PROXY_HOST
+            - name: SOCKS5_PROXY_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-api-app-secret
+                  key: SOCKS5_PROXY_PORT
+            - name: SOCKS5_PROXY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-api-app-secret
+                  key: SOCKS5_PROXY_USERNAME
+            - name: SOCKS5_PROXY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-api-app-secret
+                  key: SOCKS5_PROXY_PASSWORD
           resources:
             requests:
               cpu: 100m
