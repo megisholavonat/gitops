@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav
+spec:
+  selector:
+    matchLabels:
+      app: mhav
+  template:
+    metadata:
+      labels:
+        app: mhav
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: mhav
+          image: ghcr.io/megisholavonat/mhav-web:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: POSTHOG_KEY
+              value: phc_EcJKrQSOQnG0Donv3iO1XgWS7wPLEtKI5sy1Yl1OfoJ
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 3000
+          #     scheme: HTTP
+          #   initialDelaySeconds: 10
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 3000
+          #     scheme: HTTP
+          #   initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi

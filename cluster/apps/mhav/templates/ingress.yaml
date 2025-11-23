@@ -17,3 +17,10 @@ spec:
                   number: 80
             path: /
             pathType: Prefix
+          - backend:
+              service:
+                name: mhav-api
+                port:
+                  number: 80
+            path: /api
+            pathType: Prefix

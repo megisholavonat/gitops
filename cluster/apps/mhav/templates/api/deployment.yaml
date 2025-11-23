@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: mhav-api
-          image: ghcr.io/megisholavonat/megisholavonat-api:{{ .Values.image.tag }}
+          image: ghcr.io/megisholavonat/mhav-api:{{ .Values.image.tag }}
           ports:
             - containerPort: 8000
           env:
