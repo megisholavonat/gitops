@@ -1,0 +1,61 @@
+grafana:
+  persistence:
+    enabled: true
+    type: pvc
+    storageClassName: local-path
+    accessModes:
+      - ReadWriteOnce
+    size: 2Gi
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    hosts:
+      - monitoring.megisholavonat.info
+    path: /
+
+prometheus:
+  prometheusSpec:
+    retention: 180d
+    externalUrl: https://monitoring.megisholavonat.info/prometheus
+    routePrefix: /prometheus
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    hosts:
+      - monitoring.megisholavonat.info
+    path: /prometheus
+
+alertmanager:
+  alertmanagerSpec:
+    externalUrl: https://monitoring.megisholavonat.info/alertmanager
+    routePrefix: /alertmanager
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    hosts:
+      - monitoring.megisholavonat.info
+    path: /alertmanager
