@@ -17,6 +17,9 @@ spec:
     - repoURL: https://github.com/megisholavonat/gitops.git
       targetRevision: HEAD
       ref: values
+    - repoURL: https://github.com/megisholavonat/gitops.git
+      targetRevision: HEAD
+      path: cluster/apps/monitoring/templates
   destination:
     name: in-cluster
     namespace: monitoring

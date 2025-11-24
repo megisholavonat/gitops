@@ -36,6 +36,7 @@ prometheus:
     ingressClassName: traefik
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
     hosts:
       - monitoring.megisholavonat.info
     path: /prometheus
@@ -58,6 +59,7 @@ alertmanager:
     ingressClassName: traefik
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
     hosts:
       - monitoring.megisholavonat.info
     path: /alertmanager
