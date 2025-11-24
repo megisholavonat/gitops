@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav-api-scheduler
+spec:
+  selector:
+    matchLabels:
+      app: mhav-api-scheduler
+  template:
+    metadata:
+      labels:
+        app: mhav-api-scheduler
+    spec:
+      containers:
+        - name: mhav-api-scheduler
+          image: ghcr.io/megisholavonat/mhav-api:{{ .Values.image.tag }}
+          command: [ "taskiq" ]
+          args: [ "scheduler", "api.core.taskiq_broker:scheduler", "--fs-discover", "--tasks-pattern", "api/tasks/**/*.py" ]
+          env:
+            - name: REDIS_HOST
+              value: redis.redis.svc.cluster.local
+            - name: REDIS_KEY
+              value: mhav-api
+            - name: GRAPHQL_ENDPOINT
+              value: "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
