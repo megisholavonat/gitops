@@ -6,6 +6,8 @@ grafana:
     accessModes:
       - ReadWriteOnce
     size: 2Gi
+  initChownData:
+    enabled: false
   ingress:
     enabled: true
     ingressClassName: traefik
