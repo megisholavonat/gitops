@@ -13,6 +13,7 @@ grafana:
     ingressClassName: traefik
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.priority: "1"
     hosts:
       - monitoring.megisholavonat.info
     path: /
@@ -37,6 +38,7 @@ prometheus:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
+      traefik.ingress.kubernetes.io/router.priority: "100"
     hosts:
       - monitoring.megisholavonat.info
     paths:
@@ -62,6 +64,7 @@ alertmanager:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
+      traefik.ingress.kubernetes.io/router.priority: "100"
     hosts:
       - monitoring.megisholavonat.info
     paths:
