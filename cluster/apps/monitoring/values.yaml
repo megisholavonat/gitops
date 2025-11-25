@@ -13,7 +13,6 @@ grafana:
     ingressClassName: traefik
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.priority: "1"
     hosts:
       - monitoring.megisholavonat.info
     path: /
@@ -21,8 +20,8 @@ grafana:
 prometheus:
   prometheusSpec:
     retention: 180d
-    externalUrl: https://monitoring.megisholavonat.info/prometheus
-    routePrefix: /prometheus
+    externalUrl: https://prometheus-monitoring.megisholavonat.info
+    routePrefix: /
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -38,17 +37,16 @@ prometheus:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-      traefik.ingress.kubernetes.io/router.priority: "100"
     hosts:
-      - monitoring.megisholavonat.info
+      - prometheus-monitoring.megisholavonat.info
     paths:
-      - /prometheus
+      - /
     pathType: Prefix
 
 alertmanager:
   alertmanagerSpec:
-    externalUrl: https://monitoring.megisholavonat.info/alertmanager
-    routePrefix: /alertmanager
+    externalUrl: https://alertmanager-monitoring.megisholavonat.info
+    routePrefix: /
     storage:
       volumeClaimTemplate:
         spec:
@@ -64,9 +62,8 @@ alertmanager:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
-      traefik.ingress.kubernetes.io/router.priority: "100"
     hosts:
-      - monitoring.megisholavonat.info
+      - alertmanager-monitoring.megisholavonat.info
     paths:
-      - /alertmanager
+      - /
     pathType: Prefix
