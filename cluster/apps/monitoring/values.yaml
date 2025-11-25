@@ -39,7 +39,9 @@ prometheus:
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
     hosts:
       - monitoring.megisholavonat.info
-    path: /prometheus
+    paths:
+      - /prometheus
+    pathType: Prefix
 
 alertmanager:
   alertmanagerSpec:
@@ -62,4 +64,6 @@ alertmanager:
       traefik.ingress.kubernetes.io/router.middlewares: monitoring-basic-auth@kubernetescrd
     hosts:
       - monitoring.megisholavonat.info
-    path: /alertmanager
+    paths:
+      - /alertmanager
+    pathType: Prefix
