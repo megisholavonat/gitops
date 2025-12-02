@@ -14,15 +14,22 @@ spec:
       containers:
         - name: mhav-api-worker
           image: ghcr.io/megisholavonat/mhav-api:{{ .Values.image.tag }}
-          command: [ "taskiq" ]
-          args: [ "worker", "api.core.taskiq_broker:broker", "--fs-discover", "--tasks-pattern", "api/tasks/**/*.py" ]
+          command: ["taskiq"]
+          args:
+            [
+              "worker",
+              "api.core.taskiq_broker:broker",
+              "--fs-discover",
+              "--tasks-pattern",
+              "api/tasks/**/*.py",
+            ]
           env:
             - name: REDIS_HOST
               value: redis.redis.svc.cluster.local
             - name: REDIS_KEY
               value: mhav-api
             - name: GRAPHQL_ENDPOINT
-              value: "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql"
+              value: "https://mavplusz.hu//otp2-backend/otp/routers/default/index/graphql"
             - name: SOCKS5_PROXY_ENABLE
               value: "true"
             - name: SOCKS5_PROXY_HOST
