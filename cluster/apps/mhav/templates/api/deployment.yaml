@@ -24,7 +24,7 @@ spec:
             - name: POSTHOG_KEY
               value: phc_EcJKrQSOQnG0Donv3iO1XgWS7wPLEtKI5sy1Yl1OfoJ
             - name: GRAPHQL_ENDPOINT
-              value: "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql"
+              value: "https://mavplusz.hu//otp2-backend/otp/routers/default/index/graphql"
             - name: SOCKS5_PROXY_ENABLE
               value: "true"
             - name: SOCKS5_PROXY_HOST
