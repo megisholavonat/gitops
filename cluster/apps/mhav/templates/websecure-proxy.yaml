@@ -1,0 +1,26 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    env:
+      - name: PROXY_TRUSTED_IPS
+        valueFrom:
+          secretKeyRef:
+            name: traefik-proxy-config
+            key: trusted-ips
+
+    additionalArguments:
+      - "--entrypoints.websecureproxy.address=:8444"
+      - "--entrypoints.websecureproxy.proxyProtocol.trustedIPs=$(PROXY_TRUSTED_IPS)"
+
+    ports:
+      websecureproxy:
+        port: 8444
+        expose:
+          default: true
+        exposedPort: 8444
+        tls:
+          enabled: true
