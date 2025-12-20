@@ -16,6 +16,9 @@ spec:
           image: ghcr.io/megisholavonat/mhav-web:{{ .Values.image.tag }}
           ports:
             - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_TILE_CACHE_URL
+              value: https://tc.megisholavonat.info
           # livenessProbe:
           #   httpGet:
           #     path: /
