@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tile-cache
+  labels:
+    app: tile-cache
+    component: tile-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tile-cache
+  template:
+    metadata:
+      labels:
+        app: tile-cache
+        component: tile-cache
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: cache
+              mountPath: /var/cache/nginx
+            - name: config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 300m
+              memory: 512Mi
+      volumes:
+        - name: cache
+          emptyDir:
+            sizeLimit: 5Gi
+        - name: config
+          configMap:
+            name: tile-cache-config

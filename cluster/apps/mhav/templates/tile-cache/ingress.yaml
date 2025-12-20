@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecureproxy
+  name: tile-cache
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: tc.megisholavonat.info
+      http:
+        paths:
+          - backend:
+              service:
+                name: tile-cache
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
