@@ -61,6 +61,9 @@ data:
 
                 # Tile cache endpoint (https://operations.osmfoundation.org/policies/tiles/)
                 location / {
+                    proxy_ignore_headers Cache-Control Expires;
+                    proxy_cache_bypass 0;
+                    
                     # Cache configuration
                     proxy_cache tilecache;
                     proxy_cache_valid 200 30d;
@@ -70,7 +73,6 @@ data:
                     proxy_cache_revalidate on;
                     proxy_cache_min_uses 1;
                     proxy_cache_methods GET HEAD;
-                    proxy_cache_bypass $http_cache_control;
 
                     # Add cache status header
                     add_header X-Cache-Status $upstream_cache_status;
