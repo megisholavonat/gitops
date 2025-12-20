@@ -28,6 +28,9 @@ data:
             tcp_nopush on;
             keepalive_timeout 65;
 
+            # DNS resolver for tile server
+            resolver 10.43.0.10 valid=30s;
+
             # Cache configuration
             proxy_cache_path /var/cache/nginx/tiles levels=1:2 keys_zone=tilecache:200m max_size=5g inactive=30d use_temp_path=off;
 
