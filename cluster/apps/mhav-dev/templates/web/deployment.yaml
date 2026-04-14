@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav-dev
+spec:
+  selector:
+    matchLabels:
+      app: mhav-dev
+  template:
+    metadata:
+      labels:
+        app: mhav-dev
+    spec:
+      containers:
+        - name: mhav-dev
+          image: ghcr.io/megisholavonat/mhav-web:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_TILE_CACHE_URL
+              value: https://tc.megisholavonat.info
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 3000
+          #     scheme: HTTP
+          #   initialDelaySeconds: 10
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 3000
+          #     scheme: HTTP
+          #   initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi

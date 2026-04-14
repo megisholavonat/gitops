@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav-dev-api-worker
+spec:
+  selector:
+    matchLabels:
+      app: mhav-dev-api-worker
+  template:
+    metadata:
+      labels:
+        app: mhav-dev-api-worker
+    spec:
+      containers:
+        - name: mhav-dev-api-worker
+          image: ghcr.io/megisholavonat/mhav-api:{{ .Values.image.tag }}
+          command: ["taskiq"]
+          args:
+            [
+              "worker",
+              "api.core.taskiq_broker:broker",
+              "--fs-discover",
+              "--tasks-pattern",
+              "api/tasks/**/*.py",
+            ]
+          env:
+            - name: REDIS_HOST
+              value: redis.redis.svc.cluster.local
+            - name: REDIS_KEY
+              value: mhav-dev-api
+            - name: GRAPHQL_ENDPOINT
+              value: "https://mavplusz.hu//otp2-backend/otp/routers/default/index/graphql"
+            - name: SOCKS5_PROXY_ENABLE
+              value: "true"
+            - name: SOCKS5_PROXY_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-dev-api-app-secret
+                  key: SOCKS5_PROXY_HOST
+            - name: SOCKS5_PROXY_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-dev-api-app-secret
+                  key: SOCKS5_PROXY_PORT
+            - name: SOCKS5_PROXY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-dev-api-app-secret
+                  key: SOCKS5_PROXY_USERNAME
+            - name: SOCKS5_PROXY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-dev-api-app-secret
+                  key: SOCKS5_PROXY_PASSWORD
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
