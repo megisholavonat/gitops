@@ -26,7 +26,7 @@ spec:
             - name: GRAPHQL_ENDPOINT
               value: "https://mavplusz.hu//otp2-backend/otp/routers/default/index/graphql"
             - name: SOCKS5_PROXY_ENABLE
-              value: "false"
+              value: "true"
             - name: SOCKS5_PROXY_HOST
               valueFrom:
                 secretKeyRef:
