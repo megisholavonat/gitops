@@ -18,7 +18,7 @@ spec:
             - containerPort: 8000
           env:
             - name: REDIS_HOST
-              value: redis.redis.svc.cluster.local
+              value: redis.redis
             - name: REDIS_KEY
               value: mhav-api
             - name: POSTHOG_KEY
