@@ -1,0 +1,39 @@
+# CloudNativePG cluster for the API. The operator generates the
+# `mhav-pg-app` secret (keys: username, password, host, uri, ...) and the
+# `mhav-pg-rw` service; the API reads DATABASE_URL from the `uri` key.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: mhav-pg
+  annotations:
+    # Created before the migration job (wave -1) and the deployments (wave 0)
+    argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  instances: {{ .Values.postgres.instances }}
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  bootstrap:
+    initdb:
+      database: mhav
+      owner: mhav
+  storage:
+    size: {{ .Values.postgres.storage }}
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
+  # Off-cluster backups are not configured yet. To enable them, seal an
+  # object-store credential secret (see the README) and add e.g.:
+  # backup:
+  #   barmanObjectStore:
+  #     destinationPath: s3://<bucket>/mhav
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: mhav-pg-backup
+  #         key: ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: mhav-pg-backup
+  #         key: SECRET_ACCESS_KEY
+  #   retentionPolicy: 30d
