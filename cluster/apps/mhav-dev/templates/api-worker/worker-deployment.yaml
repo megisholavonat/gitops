@@ -33,6 +33,9 @@ spec:
                 secretKeyRef:
                   name: mhav-dev-pg-app
                   key: uri
+            # Dev keeps one month of raw delay history (prod: default 13)
+            - name: HISTORY_RETENTION_MONTHS
+              value: "1"
             - name: GRAPHQL_ENDPOINT
               value: "https://mavplusz.hu//otp2-backend/otp/routers/default/index/graphql"
             - name: SOCKS5_PROXY_ENABLE
