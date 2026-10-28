@@ -21,6 +21,11 @@ spec:
               value: redis.redis
             - name: REDIS_KEY
               value: mhav-api
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-pg-app
+                  key: uri
             - name: POSTHOG_KEY
               value: phc_EcJKrQSOQnG0Donv3iO1XgWS7wPLEtKI5sy1Yl1OfoJ
             - name: GRAPHQL_ENDPOINT
