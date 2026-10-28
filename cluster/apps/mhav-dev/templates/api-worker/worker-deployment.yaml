@@ -28,6 +28,11 @@ spec:
               value: redis.redis
             - name: REDIS_KEY
               value: mhav-dev-api
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mhav-dev-pg-app
+                  key: uri
             - name: GRAPHQL_ENDPOINT
               value: "https://mavplusz.hu//otp2-backend/otp/routers/default/index/graphql"
             - name: SOCKS5_PROXY_ENABLE

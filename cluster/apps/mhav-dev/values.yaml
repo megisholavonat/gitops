@@ -1,2 +1,5 @@
 image:
   tag: dbc52458821f01d037dfe925f0184fa215a05266
+postgres:
+  instances: 1
+  storage: 10Gi
