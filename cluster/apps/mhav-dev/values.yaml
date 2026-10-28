@@ -2,4 +2,4 @@ postgres:
   instances: 1
   storage: 10Gi
 image:
-  tag: f345fa19addba2068bcda565634dc27563240a7f
+  tag: 2c4e31277b65b402f34fc36702a139d77f68d616
