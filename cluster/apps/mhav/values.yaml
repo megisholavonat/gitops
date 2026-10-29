@@ -10,4 +10,4 @@ apns:
 # Bump next.image.tag by hand to a commit the dev pipeline has built.
 next:
   image:
-    tag: b6510bec82b4c6514c201ed2d6eb121c1548d4a1
+    tag: 058e860d35b03453e6f867fb5e4f60915b0b2508
