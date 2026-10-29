@@ -24,16 +24,27 @@ spec:
       memory: 256Mi
     limits:
       memory: 1Gi
-  # Off-cluster backups are not configured yet. To enable them, seal an
-  # object-store credential secret (see the README) and add e.g.:
-  # backup:
-  #   barmanObjectStore:
-  #     destinationPath: s3://<bucket>/mhav
-  #     s3Credentials:
-  #       accessKeyId:
-  #         name: mhav-pg-backup
-  #         key: ACCESS_KEY_ID
-  #       secretAccessKey:
-  #         name: mhav-pg-backup
-  #         key: SECRET_ACCESS_KEY
-  #   retentionPolicy: 30d
+  {{- with .Values.postgres.backup }}
+  {{- if .enabled }}
+  # Base backups (see scheduled-backup.yaml) and continuous WAL archiving to
+  # object storage. Needs the sealed `mhav-pg-backup` secret (see the README).
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://{{ required "postgres.backup.bucket is required" .bucket }}/mhav
+      {{- with .endpointURL }}
+      endpointURL: {{ . }}
+      {{- end }}
+      s3Credentials:
+        accessKeyId:
+          name: mhav-pg-backup
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: mhav-pg-backup
+          key: SECRET_ACCESS_KEY
+      wal:
+        compression: gzip
+      data:
+        compression: gzip
+    retentionPolicy: {{ .retention | quote }}
+  {{- end }}
+  {{- end }}

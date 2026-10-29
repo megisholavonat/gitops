@@ -1,0 +1,18 @@
+{{- if .Values.postgres.backup.enabled }}
+# Daily base backup of mhav-pg to the object store configured in the
+# Cluster's `backup` block. Older backups and WAL are pruned by its
+# retentionPolicy.
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: mhav-pg-daily
+spec:
+  # Six fields, seconds first: every day at 03:00 (operator time, UTC)
+  schedule: "0 0 3 * * *"
+  # Take the first backup right away instead of waiting for 03:00
+  immediate: true
+  backupOwnerReference: self
+  method: barmanObjectStore
+  cluster:
+    name: mhav-pg
+{{- end }}
