@@ -28,6 +28,12 @@ spec:
                   key: uri
             - name: POSTHOG_KEY
               value: phc_EcJKrQSOQnG0Donv3iO1XgWS7wPLEtKI5sy1Yl1OfoJ
+            # Traefik connects from the k3s pod network (default cluster-cidr);
+            # only it may set the client IP via CF-Connecting-IP
+            - name: TRUSTED_PROXIES
+              value: "10.42.0.0/16"
+            - name: CLIENT_IP_HEADER
+              value: CF-Connecting-IP
             - name: GRAPHQL_ENDPOINT
               value: "https://mavplusz.hu//otp2-backend/otp/routers/default/index/graphql"
             - name: SOCKS5_PROXY_ENABLE
