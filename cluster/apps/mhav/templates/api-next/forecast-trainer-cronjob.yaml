@@ -1,4 +1,4 @@
-# Retrains the delay forecast weekly and stores the model in mhav-next-pg; the
+# Retrains the delay forecast weekly and stores the model in mhav-pg; the
 # api-next workers pick up the newest model within 10 minutes. The trainer image
 # is the `trainer` stage of the API Dockerfile, pushed with the same tag.
 apiVersion: batch/v1
@@ -26,7 +26,7 @@ spec:
                 - name: DATABASE_URL
                   valueFrom:
                     secretKeyRef:
-                      name: mhav-next-pg-app
+                      name: mhav-pg-app
                       key: uri
               resources:
                 requests:

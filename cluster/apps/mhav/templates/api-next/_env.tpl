@@ -7,7 +7,7 @@
 - name: DATABASE_URL
   valueFrom:
     secretKeyRef:
-      name: mhav-next-pg-app
+      name: mhav-pg-app
       key: uri
 - name: GRAPHQL_ENDPOINT
   value: "https://mavplusz.hu//otp2-backend/otp/routers/default/index/graphql"

@@ -11,6 +11,3 @@ apns:
 next:
   image:
     tag: 2fc116abeff7ce417f359483738b6671279c86a0
-  postgres:
-    instances: 1
-    storage: 20Gi

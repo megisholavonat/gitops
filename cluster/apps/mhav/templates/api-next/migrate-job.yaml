@@ -1,5 +1,5 @@
 # Runs `alembic upgrade head` with the api-next image before its deployments
-# roll (Sync hook in wave -1, after mhav-next-pg in wave -2).
+# roll (Sync hook in wave -1, after mhav-pg in wave -2).
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -20,7 +20,7 @@ spec:
           command:
             - sh
             - -c
-            - until pg_isready -h mhav-next-pg-rw -p 5432; do sleep 2; done
+            - until pg_isready -h mhav-pg-rw -p 5432; do sleep 2; done
       containers:
         - name: migrate
           image: ghcr.io/megisholavonat/mhav-api:{{ .Values.next.image.tag }}
@@ -29,7 +29,7 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: mhav-next-pg-app
+                  name: mhav-pg-app
                   key: uri
           resources:
             requests:

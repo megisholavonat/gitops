@@ -5,15 +5,16 @@ Argo CD watches `cluster/apps` (see `2-root-app.yaml`).
 ## api-next (mhav)
 
 `cluster/apps/mhav/templates/api-next` runs the new API next to the old
-`mhav-api`, which stays as it is until launch day. It has its own everything,
-so the two never touch each other's data:
+`mhav-api`, which stays as it is until launch day. It has its own Redis and
+uses `mhav-pg`, which the old API never used, so the two never touch each
+other's data:
 
 | | old | api-next |
 | --- | --- | --- |
 | API, worker, scheduler | `mhav-api`, `mhav-api-worker`, `mhav-api-scheduler` | `mhav-api-next`, `mhav-api-next-worker`, `mhav-api-next-scheduler` |
 | Image tag | `image.tag` (prod CI) | `next.image.tag` (bumped by hand) |
 | Redis | `redis.redis` (shared with dev) | `mhav-next-redis` (in `mhav`) |
-| Postgres | — | `mhav-next-pg`, migrated by `mhav-api-next-migrate` |
+| Postgres | — | `mhav-pg`, migrated by `mhav-api-next-migrate` |
 | Forecast trainer | — | `mhav-api-next-forecast-trainer` (weekly) |
 | Host | `megisholavonat.info/api` | `api.megisholavonat.info` |
 
