@@ -2,7 +2,7 @@ postgres:
   instances: 1
   storage: 10Gi
 image:
-  tag: 2fc116abeff7ce417f359483738b6671279c86a0
+  tag: b6510bec82b4c6514c201ed2d6eb121c1548d4a1
 apns:
   bundleId: info.megisholavonat.app
   useSandbox: false
