@@ -15,6 +15,10 @@ spec:
       labels:
         app: tile-cache
         component: tile-cache
+      annotations:
+        # nginx.conf is mounted via subPath, which never picks up ConfigMap
+        # changes; roll the pod when the config changes
+        checksum/config: {{ include (print $.Template.BasePath "/tile-cache/configmap.yaml") . | sha256sum }}
     spec:
       containers:
         - name: nginx
