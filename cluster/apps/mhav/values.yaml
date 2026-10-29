@@ -1,5 +1,15 @@
 postgres:
   instances: 1
   storage: 20Gi
+  # Off-cluster backups. Seal the `mhav-pg-backup` secret first (see the
+  # README), then fill in the bucket (and endpoint) and set enabled: true.
+  backup:
+    enabled: false
+    # Bucket name only; backups go to s3://<bucket>/mhav
+    bucket: ""
+    # S3-compatible endpoint, e.g. https://fsn1.your-objectstorage.com;
+    # leave empty for AWS S3
+    endpointURL: ""
+    retention: 30d
 image:
   tag: 124ef4686f7a73da7f64216083a53e4b96b5de77
