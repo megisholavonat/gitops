@@ -19,6 +19,11 @@ spec:
           env:
             - name: NEXT_PUBLIC_TILE_CACHE_URL
               value: https://tc.megisholavonat.info
+            # Link previews fetch the API in-cluster, never via the request Host
+            - name: API_URL
+              value: http://mhav-api.mhav.svc:80
+            - name: SITE_URL
+              value: https://megisholavonat.info
           # livenessProbe:
           #   httpGet:
           #     path: /
