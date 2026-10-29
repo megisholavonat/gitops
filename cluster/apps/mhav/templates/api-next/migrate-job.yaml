@@ -1,10 +1,9 @@
-# Runs `alembic upgrade head` with the new image before the deployments roll.
-# This is a Sync hook in wave -1 rather than a PreSync hook: PreSync runs before
-# anything is applied, so on the first sync the database would not exist yet.
+# Runs `alembic upgrade head` with the api-next image before its deployments
+# roll (Sync hook in wave -1, after mhav-pg in wave -2).
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mhav-api-migrate
+  name: mhav-api-next-migrate
   annotations:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
@@ -24,7 +23,7 @@ spec:
             - until pg_isready -h mhav-pg-rw -p 5432; do sleep 2; done
       containers:
         - name: migrate
-          image: ghcr.io/megisholavonat/mhav-api:{{ .Values.image.tag }}
+          image: ghcr.io/megisholavonat/mhav-api:{{ .Values.next.image.tag }}
           command: ["alembic", "upgrade", "head"]
           env:
             - name: DATABASE_URL

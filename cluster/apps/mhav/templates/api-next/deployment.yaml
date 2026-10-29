@@ -1,0 +1,49 @@
+# The new API, running next to the old mhav-api until launch day (see README).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav-api-next
+spec:
+  selector:
+    matchLabels:
+      app: mhav-api-next
+  template:
+    metadata:
+      labels:
+        app: mhav-api-next
+    spec:
+      containers:
+        - name: mhav-api-next
+          image: ghcr.io/megisholavonat/mhav-api:{{ .Values.next.image.tag }}
+          ports:
+            - containerPort: 8000
+          env:
+            {{- include "mhav.apiNext.env" . | nindent 12 }}
+            - name: POSTHOG_KEY
+              value: phc_EcJKrQSOQnG0Donv3iO1XgWS7wPLEtKI5sy1Yl1OfoJ
+            # Traefik connects from the k3s pod network (default cluster-cidr);
+            # only it may set the client IP via CF-Connecting-IP
+            - name: TRUSTED_PROXIES
+              value: "10.42.0.0/16"
+            - name: CLIENT_IP_HEADER
+              value: CF-Connecting-IP
+            {{- include "mhav.apiNext.pushEnv" . | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi

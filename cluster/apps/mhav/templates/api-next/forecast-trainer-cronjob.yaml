@@ -1,10 +1,10 @@
-# Retrains the delay forecast weekly and stores the model in Postgres; the API
-# workers pick up the newest model within 10 minutes. The trainer image is the
-# `trainer` stage of the API Dockerfile, pushed with the same tag as the API.
+# Retrains the delay forecast weekly and stores the model in mhav-pg; the
+# api-next workers pick up the newest model within 10 minutes. The trainer image
+# is the `trainer` stage of the API Dockerfile, pushed with the same tag.
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: mhav-api-forecast-trainer
+  name: mhav-api-next-forecast-trainer
 spec:
   schedule: "15 4 * * 1"
   timeZone: Europe/Budapest
@@ -19,8 +19,8 @@ spec:
         spec:
           restartPolicy: Never
           containers:
-            - name: mhav-api-forecast-trainer
-              image: ghcr.io/megisholavonat/mhav-api-trainer:{{ .Values.image.tag }}
+            - name: mhav-api-next-forecast-trainer
+              image: ghcr.io/megisholavonat/mhav-api-trainer:{{ .Values.next.image.tag }}
               command: ["python", "-m", "api.forecast", "train", "--threads", "2"]
               env:
                 - name: DATABASE_URL

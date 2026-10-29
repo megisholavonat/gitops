@@ -3,3 +3,11 @@ postgres:
   storage: 20Gi
 image:
   tag: 124ef4686f7a73da7f64216083a53e4b96b5de77
+apns:
+  bundleId: info.megisholavonat.app
+  useSandbox: false
+# api-next: the new API next to the old one until launch (templates/api-next).
+# Bump next.image.tag by hand to a commit the dev pipeline has built.
+next:
+  image:
+    tag: 2fc116abeff7ce417f359483738b6671279c86a0
