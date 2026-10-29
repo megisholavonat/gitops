@@ -57,6 +57,30 @@ spec:
                 secretKeyRef:
                   name: mhav-api-app-secret
                   key: SOCKS5_PROXY_PASSWORD
+            # iOS Live Activities through APNs; the key comes from the apns-secret
+            # SealedSecret (see README), optional so pods start without it
+            - name: APNS_BUNDLE_ID
+              value: {{ .Values.apns.bundleId | quote }}
+            - name: APNS_USE_SANDBOX
+              value: {{ .Values.apns.useSandbox | quote }}
+            - name: APNS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: apns-secret
+                  key: APNS_KEY_ID
+                  optional: true
+            - name: APNS_TEAM_ID
+              valueFrom:
+                secretKeyRef:
+                  name: apns-secret
+                  key: APNS_TEAM_ID
+                  optional: true
+            - name: APNS_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: apns-secret
+                  key: APNS_PRIVATE_KEY
+                  optional: true
           resources:
             requests:
               cpu: 100m

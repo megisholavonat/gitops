@@ -3,3 +3,6 @@ postgres:
   storage: 10Gi
 image:
   tag: 2fc116abeff7ce417f359483738b6671279c86a0
+apns:
+  bundleId: info.megisholavonat.app
+  useSandbox: false

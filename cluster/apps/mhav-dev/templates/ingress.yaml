@@ -1,3 +1,6 @@
+# The web stays behind basic auth; the API is public so the TestFlight build
+# can reach it. Traefik ranks routers by rule length, so the longer docs paths
+# below win over the public /api prefix and keep the API docs protected.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -18,6 +21,40 @@ spec:
                   number: 80
             path: /
             pathType: Prefix
+          - backend:
+              service:
+                name: mhav-dev-api
+                port:
+                  number: 80
+            path: /api/docs
+            pathType: Prefix
+          - backend:
+              service:
+                name: mhav-dev-api
+                port:
+                  number: 80
+            path: /api/redoc
+            pathType: Prefix
+          - backend:
+              service:
+                name: mhav-dev-api
+                port:
+                  number: 80
+            path: /api/openapi.json
+            pathType: Exact
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecureproxy
+  name: mhav-dev-api
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: dev.megisholavonat.info
+      http:
+        paths:
           - backend:
               service:
                 name: mhav-dev-api

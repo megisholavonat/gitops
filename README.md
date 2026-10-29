@@ -38,3 +38,29 @@ kubeseal --cert kubeseal.pem -o yaml \
 
 Use `-n mhav-dev` and the `mhav-dev` chart for the dev environment; a sealed
 secret only decrypts in the namespace it was sealed for.
+
+### APNs key (mhav, mhav-dev)
+
+The API and the worker send iOS Live Activity updates through APNs.
+`APNS_BUNDLE_ID` and `APNS_USE_SANDBOX` are set in each chart's `values.yaml`;
+the key itself comes from an `apns-secret` in each namespace. The deployments
+reference it as optional, so pods start without it and Live Activities stay off
+until it exists. Seal one per namespace from the `.p8` downloaded from Apple
+(Key ID and Team ID are on the key's page in the developer account):
+
+```bash
+for ns in mhav mhav-dev; do
+  kubectl create secret generic apns-secret -n "$ns" --dry-run=client -o yaml \
+    --from-literal=APNS_KEY_ID='<key id>' \
+    --from-literal=APNS_TEAM_ID='<team id>' \
+    --from-file=APNS_PRIVATE_KEY=AuthKey_<key id>.p8 \
+    > "apns-secret-$ns.unsealed.yaml"
+  kubeseal --cert kubeseal.pem -o yaml \
+    < "apns-secret-$ns.unsealed.yaml" \
+    > "cluster/apps/$ns/templates/api/apns-secret.yaml"
+done
+rm apns-secret-*.unsealed.yaml
+```
+
+Pods read the secret only at start, so restart `mhav-api`/`mhav-api-worker`
+(and the `mhav-dev-` ones) after Argo CD has synced it.
