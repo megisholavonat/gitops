@@ -5,6 +5,11 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
+    # Keep access logs off (the chart default): they would record client IPs
+    logs:
+      access:
+        enabled: false
+
     env:
       - name: PROXY_TRUSTED_IPS
         valueFrom:
