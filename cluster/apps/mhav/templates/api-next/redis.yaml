@@ -1,0 +1,45 @@
+# Redis for api-next only. The old API in redis.redis uses the same key and
+# task stream names, so the two must not share an instance. Like redis.redis,
+# no persistence: everything in it is a cache or an in-flight task.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav-next-redis
+spec:
+  selector:
+    matchLabels:
+      app: mhav-next-redis
+  template:
+    metadata:
+      labels:
+        app: mhav-next-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:8.2-alpine
+          args: ["--save", "", "--appendonly", "no"]
+          ports:
+            - containerPort: 6379
+          readinessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mhav-next-redis
+spec:
+  selector:
+    app: mhav-next-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379

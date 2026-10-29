@@ -1,0 +1,22 @@
+# Public API host for the app; no basic auth. Same entrypoint as
+# megisholavonat.info (Cloudflare in front, TLS to the origin by Traefik).
+# The API also answers under /api here, since it strips its root_path.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecureproxy
+  name: mhav-api-next
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: api.megisholavonat.info
+      http:
+        paths:
+          - backend:
+              service:
+                name: mhav-api-next
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix

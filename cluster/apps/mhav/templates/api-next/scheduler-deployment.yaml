@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav-api-next-scheduler
+spec:
+  selector:
+    matchLabels:
+      app: mhav-api-next-scheduler
+  template:
+    metadata:
+      labels:
+        app: mhav-api-next-scheduler
+    spec:
+      containers:
+        - name: mhav-api-next-scheduler
+          image: ghcr.io/megisholavonat/mhav-api:{{ .Values.next.image.tag }}
+          command: ["taskiq"]
+          args:
+            [
+              "scheduler",
+              "api.core.taskiq_broker:scheduler",
+              "--fs-discover",
+              "--tasks-pattern",
+              "api/tasks/**/*.py",
+            ]
+          env:
+            - name: REDIS_HOST
+              value: mhav-next-redis
+            - name: REDIS_KEY
+              value: mhav-api-next
+            - name: GRAPHQL_ENDPOINT
+              value: "https://mavplusz.hu//otp2-backend/otp/routers/default/index/graphql"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

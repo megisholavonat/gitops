@@ -1,0 +1,38 @@
+# Polls upstream every minute (fixed cron in api/tasks/data.py), records
+# history and sends push alerts. While the old mhav-api also runs, upstream
+# sees twice the polling.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhav-api-next-worker
+spec:
+  selector:
+    matchLabels:
+      app: mhav-api-next-worker
+  template:
+    metadata:
+      labels:
+        app: mhav-api-next-worker
+    spec:
+      containers:
+        - name: mhav-api-next-worker
+          image: ghcr.io/megisholavonat/mhav-api:{{ .Values.next.image.tag }}
+          command: ["taskiq"]
+          args:
+            [
+              "worker",
+              "api.core.taskiq_broker:broker",
+              "--fs-discover",
+              "--tasks-pattern",
+              "api/tasks/**/*.py",
+            ]
+          env:
+            {{- include "mhav.apiNext.env" . | nindent 12 }}
+            {{- include "mhav.apiNext.pushEnv" . | nindent 12 }}
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
